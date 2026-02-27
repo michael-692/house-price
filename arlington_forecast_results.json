@@ -1,0 +1,85 @@
+{
+  "model_description": "House Price Forecast \u2014 Arlington, VA (FHFA HPI)",
+  "data_source": "FHFA HPI Master File (hpi_master.csv)",
+  "region": "Arlington-Alexandria-Reston, VA-WV MSAD (place_id 11694)",
+  "hpi_series": "Traditional, All-Transactions, Quarterly",
+  "data_range": "1975-12-31 to 2025-06-30",
+  "train_period": "1975-12-31 to 2022-06-30 (187 obs)",
+  "test_period": "2022-09-30 to 2025-06-30 (12 obs)",
+  "models": {
+    "SARIMA": {
+      "spec": "SARIMA(2,1,1)(1,1,1)[4]",
+      "target": "HPI level",
+      "test_MAE": 6.055,
+      "test_RMSE": 7.308,
+      "test_R2": 0.8684
+    },
+    "RandomForest": {
+      "spec": "n_estimators=500, max_depth=5, min_samples_leaf=5",
+      "target": "QoQ % change",
+      "test_MAE": 30.456,
+      "test_RMSE": 31.522,
+      "test_R2": -1.4489
+    },
+    "GradientBoosting": {
+      "spec": "n_estimators=300, lr=0.05, max_depth=4, subsample=0.8",
+      "target": "QoQ % change",
+      "test_MAE": 26.42,
+      "test_RMSE": 27.296,
+      "test_R2": -0.8363
+    },
+    "WeightedEnsemble": {
+      "weights": {
+        "SARIMA": 0.6668,
+        "RandomForest": 0.1546,
+        "GradientBoosting": 0.1785
+      },
+      "test_MAE": 10.105,
+      "test_RMSE": 11.638,
+      "test_R2": 0.6662
+    }
+  },
+  "forecast_path": [
+    {
+      "quarter": "2025 Q3",
+      "hpi_sarima": 415.15,
+      "hpi_rf": 421.04,
+      "hpi_gb": 419.22,
+      "hpi_ensemble": 416.79
+    },
+    {
+      "quarter": "2025 Q4",
+      "hpi_sarima": 413.49,
+      "hpi_rf": 423.63,
+      "hpi_gb": 419.68,
+      "hpi_ensemble": 416.16
+    },
+    {
+      "quarter": "2026 Q1",
+      "hpi_sarima": 417.3,
+      "hpi_rf": 419.77,
+      "hpi_gb": 417.62,
+      "hpi_ensemble": 417.74
+    },
+    {
+      "quarter": "2026 Q2",
+      "hpi_sarima": 427.1,
+      "hpi_rf": 423.12,
+      "hpi_gb": 424.6,
+      "hpi_ensemble": 426.04
+    }
+  ],
+  "q2_2026_prediction": {
+    "quarter": "2026 Q2",
+    "q2_2025_hpi_observed": 413.71,
+    "SARIMA_HPI": 427.1,
+    "RandomForest_HPI": 423.12,
+    "GradientBoosting_HPI": 424.6,
+    "Ensemble_HPI": 426.04,
+    "YoY_pct_change_SARIMA": 3.24,
+    "YoY_pct_change_RandomForest": 2.28,
+    "YoY_pct_change_GradientBoosting": 2.63,
+    "YoY_pct_change_Ensemble": 2.98,
+    "direction": "increase"
+  }
+}
